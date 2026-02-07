@@ -4,5 +4,5 @@ A collection of useful docs and assets for [ProcessWire](https://processwire.com
 
 ## Available Skills
 
-- **[pw-page-classes](skills/pw-page-classes/SKILL.md)** — Custom page classes: extending the Page class with template-specific logic, naming conventions, inheritance patterns, helper classes, and best practices.
 - **[pw-ddev-cli](skills/pw-ddev-cli/SKILL.md)** — PHP CLI via ddev: running scripts, bootstrapping the PW API, debugging with TracyDebugger, and direct database queries.
+- **[pw-page-classes](skills/pw-page-classes/SKILL.md)** — Custom page classes: extending the Page class with template-specific logic, naming conventions, inheritance patterns, helper classes, and best practices.
