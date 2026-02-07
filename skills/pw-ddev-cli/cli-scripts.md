@@ -40,6 +40,20 @@ ddev php -r "namespace ProcessWire; include('./index.php'); foreach(templates() 
 - Local variables like `$t` must be escaped as `\$t` in bash
 - Prefix output with `PHP_EOL` to separate from RockMigrations log noise
 
+## Script Example: Inspect Fields
+
+```php
+// cli_scripts/inspect_fields.php
+<?php namespace ProcessWire;
+include(__DIR__ . '/../index.php');
+
+$p = pages()->get('/');
+print_r($p->getFields()->each('name'));
+```
+```bash
+ddev php cli_scripts/inspect_fields.php
+```
+
 ## When to Use Scripts vs One-Liners
 
 | Use case | Approach |

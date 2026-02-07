@@ -18,7 +18,7 @@ ddev ssh                     # Interactive shell
 
 ## Bootstrapping ProcessWire
 
-Include `./index.php` from project root to get the full PW API (`$pages`, `$config`, `$sanitizer`, etc.).
+Include `./index.php` from project root to get the full PW API (`$pages`, `$page`, `$config`, `$sanitizer`, etc.).
 
 **All CLI script files must be placed in `./cli_scripts/`.**
 
