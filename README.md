@@ -1,6 +1,6 @@
 # ProcessWire AI Docs
 
-AI agent skills for ProcessWire development.
+A collection of useful docs and assets for [ProcessWire](https://processwire.com/) development with AI agents.
 
 ## Available Skills
 
