@@ -58,13 +58,11 @@ For collections:
 Check whether the page is in output-formatted mode:
 
 ```php
-public function getExcerpt(): string {
+public function thisAndThat(): string {
     if($this->of()) {
-        // Output-formatted: return HTML-safe content
-        return $this->wire('sanitizer')->truncate($this->body);
+        return 'This &amp; That';  // Entity-encoded for output
     }
-    // Raw mode: return unformatted
-    return strip_tags($this->body);
+    return 'This & That';  // Raw for manipulation/saving
 }
 ```
 
@@ -91,12 +89,12 @@ Inside custom page classes, always access the API via `$this->wire()`:
 ```php
 // Correct
 $this->wire()->pages->find('template=product');
-$this->wire('sanitizer')->text($input);
-$this->wire('config')->urls->templates;
+$this->wire()->sanitizer->text($input);
+$this->wire()->config->urls->templates;
 
-// WRONG — these do not work
+// Works, but not preferred — not guaranteed to use correct instance in multi-instance setups
 $this->pages;
-pages();
+pages()->find('template=product');
 ```
 
 ## Type-Safe Function Parameters

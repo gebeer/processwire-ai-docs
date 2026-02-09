@@ -4,7 +4,7 @@
 
 - **Keep classes focused** — each class handles logic for its template type only
 - **Use PHPDoc** — document all fields and virtual properties for IDE support
-- **Access API via `$this->wire()`** — never use `$this->pages` or bare API variables
+- **Access API via `$this->wire()->apivar`** — prefer over `$this->wire('apivar')` (IDE can resolve the class) and over `$this->pages` / `pages()` (not multi-instance safe)
 - **Use `parent::get($key)`** as fallback in `get()` overrides
 - **Use type hints** in method signatures (`BlogPostPage $post`) for safety
 - **Extend `DefaultPage`** instead of `Page` when you have shared base functionality

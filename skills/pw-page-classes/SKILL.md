@@ -46,10 +46,11 @@ This makes `$page->authorName` work as a virtual property.
 ```php
 // Correct — always use wire()
 $this->wire()->pages->find('template=blog-post');
-$this->wire('sanitizer')->text($value);
+$this->wire()->sanitizer->text($value);
 
-// WRONG — does not work inside page classes
+// Works but NOT preferred — not multi-instance safe
 $this->pages;
+pages()->find('template=product');
 ```
 
 ## Property Access Gotcha

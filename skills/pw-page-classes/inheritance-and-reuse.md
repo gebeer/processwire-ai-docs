@@ -7,7 +7,7 @@ A custom page class can extend another custom page class instead of `Page`:
 ```php
 class ArticlePage extends Page {
     public function getExcerpt(): string {
-        return $this->wire('sanitizer')->truncate($this->body);
+        return $this->wire()->sanitizer->truncate($this->body);
     }
 }
 
@@ -37,13 +37,13 @@ abstract class ContentPage extends Page {
 
 class ArticlePage extends ContentPage {
     public function getExcerpt(): string {
-        return $this->wire('sanitizer')->truncate($this->body);
+        return $this->wire()->sanitizer->truncate($this->body);
     }
 }
 
 class BlogPostPage extends ContentPage {
     public function getExcerpt(): string {
-        return $this->summary ?: $this->wire('sanitizer')->truncate($this->body);
+        return $this->summary ?: $this->wire()->sanitizer->truncate($this->body);
     }
 }
 ```
@@ -83,7 +83,7 @@ Share method implementations across unrelated page classes:
 ```php
 trait ExcerptTrait {
     public function getExcerpt(): string {
-        return $this->wire('sanitizer')->truncate($this->body);
+        return $this->wire()->sanitizer->truncate($this->body);
     }
 }
 

@@ -38,7 +38,7 @@ class BlogPostPage extends Page {
     public function getExcerpt(): string {
         $excerpt = $this->summary;
         if(empty($excerpt)) {
-            $excerpt = $this->wire('sanitizer')->truncate($this->body);
+            $excerpt = $this->wire()->sanitizer->truncate($this->body);
         }
         return $excerpt;
     }
@@ -72,7 +72,7 @@ class BlogPostPage extends Page {
 class ProductPageOrders extends Wire {
 
     public function getOrders(ProductPage $product): array {
-        return $this->wire('database')->query(
+        return $this->wire()->database->query(
             "SELECT * FROM orders WHERE product_id=:id",
             [':id' => $product->id]
         )->fetchAll();
@@ -163,7 +163,7 @@ abstract class ContentPage extends Page {
  */
 class ArticlePage extends ContentPage {
     public function getExcerpt(): string {
-        return $this->wire('sanitizer')->truncate($this->body, 200);
+        return $this->wire()->sanitizer->truncate($this->body, 200);
     }
 }
 ```
@@ -179,7 +179,7 @@ class ArticlePage extends ContentPage {
  */
 class NewsPage extends ContentPage {
     public function getExcerpt(): string {
-        return $this->summary ?: $this->wire('sanitizer')->truncate($this->body, 150);
+        return $this->summary ?: $this->wire()->sanitizer->truncate($this->body, 150);
     }
 }
 ```
