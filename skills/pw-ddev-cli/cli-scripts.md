@@ -9,7 +9,7 @@ All CLI scripts go in `./cli_scripts/`. Bootstrap PW with a relative include:
 include(__DIR__ . '/../index.php');
 
 // PW API now available
-$products = $pages->find('template=product');
+$products = wire()->pages->find('template=product');
 foreach ($products as $p) {
     echo "{$p->id}: {$p->title}\n";
 }
@@ -22,21 +22,21 @@ ddev php cli_scripts/myscript.php
 
 ## One-Liners
 
-Use `ddev php -r` with the functions API to avoid bash `$` variable expansion issues:
+Use `ddev php -r` with `wire()->...` to avoid bash `$` variable expansion issues:
 
 ```bash
 # Count pages by template
-ddev php -r "namespace ProcessWire; include('./index.php'); echo PHP_EOL.'Products: '.pages()->count('template=product');"
+ddev php -r "namespace ProcessWire; include('./index.php'); echo PHP_EOL.'Products: '.wire()->pages->count('template=product');"
 
 # Check module status
-ddev php -r "namespace ProcessWire; include('./index.php'); echo PHP_EOL.(modules()->isInstalled('ProcessShop') ? 'yes' : 'no');"
+ddev php -r "namespace ProcessWire; include('./index.php'); echo PHP_EOL.(wire()->modules->isInstalled('ProcessShop') ? 'yes' : 'no');"
 
 # List all templates (note \$t escaping for local var)
-ddev php -r "namespace ProcessWire; include('./index.php'); foreach(templates() as \$t) echo \$t->name.PHP_EOL;"
+ddev php -r "namespace ProcessWire; include('./index.php'); foreach(wire()->templates as \$t) echo \$t->name.PHP_EOL;"
 ```
 
 **Rules:**
-- `pages()`, `templates()`, `modules()` — safe, no `$` to escape
+- `wire()->pages`, `wire()->templates`, `wire()->modules` — safe, no `$` to escape, works when functions API is disabled
 - Local variables like `$t` must be escaped as `\$t` in bash
 - Prefix output with `PHP_EOL` to separate from RockMigrations log noise
 
@@ -47,7 +47,7 @@ ddev php -r "namespace ProcessWire; include('./index.php'); foreach(templates() 
 <?php namespace ProcessWire;
 include(__DIR__ . '/../index.php');
 
-$p = pages()->get('/');
+$p = wire()->pages->get('/');
 print_r($p->getFields()->each('name'));
 ```
 ```bash

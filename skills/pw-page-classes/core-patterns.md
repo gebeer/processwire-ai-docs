@@ -93,6 +93,7 @@ $this->wire()->sanitizer->text($input);
 $this->wire()->config->urls->templates;
 
 // Works, but not preferred — not guaranteed to use correct instance in multi-instance setups
+// pages()->find will only work if functions API is enabled
 $this->pages;
 pages()->find('template=product');
 ```
