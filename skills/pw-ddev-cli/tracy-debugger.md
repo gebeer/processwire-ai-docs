@@ -8,7 +8,7 @@ In CLI scripts, use `d()` for debug output:
 <?php namespace ProcessWire;
 include(__DIR__ . '/../index.php');
 
-$page = pages()->get('/');
+$page = wire()->pages->get('/');
 d($page, 'Home page');                          // dumps to terminal
 d($page->getFields()->each('name'), 'Fields');  // dumps array to terminal
 ```
@@ -33,7 +33,7 @@ PHP snippets placed in `site/templates/TracyDebugger/snippets/` can be executed 
 ```php
 <?php namespace ProcessWire;
 
-$products = $pages->find('template=product, limit=10');
+$products = wire()->pages->find('template=product, limit=10');
 foreach ($products as $p) {
     bd($p->title, "Product {$p->id}");
 }

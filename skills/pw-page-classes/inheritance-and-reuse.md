@@ -117,7 +117,7 @@ $wire->addHookMethod(
     'ArticlePage::getExcerpt, BlogPostPage::getExcerpt',
     function($e) {
         $page = $e->object;
-        $e->return = wire('sanitizer')->truncate($page->body);
+        $e->return = wire()->sanitizer->truncate($page->body);
     }
 );
 ```

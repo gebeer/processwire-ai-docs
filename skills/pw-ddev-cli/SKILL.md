@@ -24,7 +24,7 @@ Include `./index.php` from project root to get the full PW API (`$pages`, `$page
 
 ```bash
 # Inline one-liner
-ddev exec php -r "namespace ProcessWire; include('./index.php'); echo PHP_EOL.'Count: '.pages()->count('template=product');"
+ddev exec php -r "namespace ProcessWire; include('./index.php'); echo PHP_EOL.'Count: '.wire()->pages->count('template=product');"
 ```
 
 ```bash
@@ -33,7 +33,7 @@ ddev php cli_scripts/myscript.php
 ```
 
 **One-liner rules:**
-- Use functions API (`pages()`, `templates()`, `modules()`) to avoid bash `$` variable expansion
+- Use `wire()->pages`, `wire()->templates`, `wire()->modules` to avoid bash `$` variable expansion — works when functions API is disabled
 - Escape local variables with `\$var`
 - Prefix output with `PHP_EOL` to separate from RockMigrations log noise
 
@@ -41,4 +41,4 @@ ddev php cli_scripts/myscript.php
 
 - [CLI scripts and one-liners](cli-scripts.md) — conventions, examples, script file patterns
 - [TracyDebugger](tracy-debugger.md) — CLI debugging with `d()`, browser snippets with `bd()`
-- [Database queries](database-queries.md) — direct SQL via `database()` PDO wrapper, prepared statements
+- [Database queries](database-queries.md) — direct SQL via `wire()->database` PDO wrapper, prepared statements

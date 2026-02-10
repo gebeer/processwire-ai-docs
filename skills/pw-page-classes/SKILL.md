@@ -48,7 +48,7 @@ This makes `$page->authorName` work as a virtual property.
 $this->wire()->pages->find('template=blog-post');
 $this->wire()->sanitizer->text($value);
 
-// Works but NOT preferred — not multi-instance safe
+// Avoid — pages() fails when functions API is disabled; $this->pages not multi-instance safe
 $this->pages;
 pages()->find('template=product');
 ```
