@@ -22,22 +22,26 @@ ddev php cli_scripts/myscript.php
 
 ## One-Liners
 
-Use `ddev php -r` with the functions API to avoid bash `$` variable expansion issues:
+Always use `ddev php -r` (not `ddev exec php -r` — exec adds an extra shell layer that can consume backslash escapes). Use the functions API to avoid bash `$` variable expansion issues:
 
 ```bash
-# Count pages by template
+# Count pages by template (functions API — no escaping needed)
 ddev php -r "namespace ProcessWire; include('./index.php'); echo PHP_EOL.'Products: '.pages()->count('template=product');"
 
 # Check module status
 ddev php -r "namespace ProcessWire; include('./index.php'); echo PHP_EOL.(modules()->isInstalled('ProcessShop') ? 'yes' : 'no');"
 
-# List all templates (note \$t escaping for local var)
+# With PW API variables — must escape $ as \$
+ddev php -r "namespace ProcessWire; include('./index.php'); echo \$pages->count('template=product');"
+
+# List all templates (local var \$t also needs escaping)
 ddev php -r "namespace ProcessWire; include('./index.php'); foreach(templates() as \$t) echo \$t->name.PHP_EOL;"
 ```
 
 **Rules:**
+- Always use `ddev php -r`, never `ddev exec php -r`
 - `pages()`, `templates()`, `modules()` — safe, no `$` to escape
-- Local variables like `$t` must be escaped as `\$t` in bash
+- PW API variables (`$pages`, `$config`, etc.) and local variables (`$t`) must be escaped as `\$` in bash
 - Prefix output with `PHP_EOL` to separate from RockMigrations log noise
 
 ## Script Example: Inspect Fields

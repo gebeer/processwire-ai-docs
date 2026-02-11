@@ -1,6 +1,6 @@
 ---
 name: pw-ddev-cli
-description: ProcessWire CLI usage via ddev — running PHP scripts, bootstrapping the PW API, debugging with Tracy, and direct database queries. Use when executing PHP in a ProcessWire ddev project, writing CLI scripts, or querying the database directly.
+description: Runs PHP scripts and one-liners via ddev in ProcessWire projects, bootstraps the PW API for CLI usage, debugs with TracyDebugger, creates Tracy console snippets, and executes direct database queries. Use when running PHP through ddev, writing ProcessWire CLI scripts, building Tracy debugger snippets, or querying the database in a ddev environment.
 ---
 
 # ProcessWire CLI via ddev
@@ -23,8 +23,14 @@ Include `./index.php` from project root to get the full PW API (`$pages`, `$page
 **All CLI script files must be placed in `./cli_scripts/`.**
 
 ```bash
-# Inline one-liner
-ddev exec php -r "namespace ProcessWire; include('./index.php'); echo PHP_EOL.'Count: '.pages()->count('template=product');"
+# Inline one-liner (functions API — no $ escaping needed)
+ddev php -r "namespace ProcessWire; include('./index.php'); echo PHP_EOL.'Count: '.pages()->count('template=product');"
+
+# With PW API variables — must escape $ as \$
+ddev php -r "namespace ProcessWire; include('./index.php'); echo \$pages->count('template=product');"
+
+# Local variables also need escaping
+ddev php -r "namespace ProcessWire; include('./index.php'); foreach(templates() as \$t) echo \$t->name.PHP_EOL;"
 ```
 
 ```bash
@@ -33,8 +39,9 @@ ddev php cli_scripts/myscript.php
 ```
 
 **One-liner rules:**
+- Always use `ddev php -r`, not `ddev exec php -r` (exec adds an extra shell layer that can consume backslash escapes)
 - Use functions API (`pages()`, `templates()`, `modules()`) to avoid bash `$` variable expansion
-- Escape local variables with `\$var`
+- When you must use `$variables`, escape them as `\$var`
 - Prefix output with `PHP_EOL` to separate from RockMigrations log noise
 
 ## Reference Files
