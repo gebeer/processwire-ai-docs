@@ -1,5 +1,5 @@
 ---
-name: rockmigrations
+name: processwire-rockmigrations
 description: Creates and manages ProcessWire schema migrations via RockMigrations — fields, templates, roles, permissions, pages, and modules. Supports config migrations, direct API methods, MagicPages, and PageClass lifecycle hooks (onCreate, onAdded, onSaved). Use when creating or modifying fields, templates, roles, permissions, running migrations, setting up access control, or working with MagicPage and PageClass hooks in ProcessWire.
 ---
 
