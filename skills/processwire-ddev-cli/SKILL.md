@@ -1,5 +1,5 @@
 ---
-name: pw-ddev-cli
+name: processwire-ddev-cli
 description: Runs PHP scripts and one-liners via ddev in ProcessWire projects, bootstraps the PW API for CLI usage, debugs with TracyDebugger, creates Tracy console snippets, and executes direct database queries. Use when running PHP through ddev, writing ProcessWire CLI scripts, building Tracy debugger snippets, or querying the database in a ddev environment.
 ---
 
