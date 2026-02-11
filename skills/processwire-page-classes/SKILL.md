@@ -1,6 +1,6 @@
 ---
-name: pw-page-classes
-description: ProcessWire custom page classes — extending the Page class with template-specific logic. Use when creating, editing, or working with custom page classes in ProcessWire, or when the user mentions page classes, typed pages, or template-specific PHP classes.
+name: processwire-page-classes
+description: Creates and manages ProcessWire custom page classes that extend Page with template-specific methods, properties, and logic. Covers naming conventions, get() overrides, API access patterns, inheritance, traits, and common pitfalls. Use when creating or editing custom page classes, adding template-specific methods to pages, or working with typed pages in ProcessWire.
 ---
 
 # ProcessWire Custom Page Classes
