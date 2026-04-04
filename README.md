@@ -14,6 +14,7 @@ Each skill is a folder containing a `SKILL.md` file with instructions and option
 - **[processwire-page-classes](skills/processwire-page-classes/SKILL.md)** — Custom page classes: extending the Page class with template-specific logic, naming conventions, inheritance patterns, helper classes, and best practices.
 - **[processwire-rockmigrations](skills/processwire-rockmigrations/SKILL.md)** — Schema migrations via RockMigrations: fields, templates, roles, permissions, MagicPages, and PageClass lifecycle hooks.
 - **[processwire-memory](skills/processwire-memory/SKILL.md)** — Cross-project persistent memory for ProcessWire API knowledge via [memvid](https://memvid.com). Store and retrieve API patterns, gotchas, and conventions with hybrid search (BM25 + vector). Requires `npm install -g memvid-cli` and a memory file at `~/.memvid/processwire.mv2` (create with `mkdir -p ~/.memvid && memvid create ~/.memvid/processwire.mv2`).
+- **[processwire-agenttools](skills/processwire-agenttools/SKILL.md)** — CLI and migration workflows for sites using the AgentTools module: querying the ProcessWire API, making repeatable site changes, and transferring changes across environments.
 
 ## Contributing Skills
 
