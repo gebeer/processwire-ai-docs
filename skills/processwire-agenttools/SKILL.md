@@ -39,29 +39,7 @@ All CLI modes and migrations share the same variables:
 
 ## When to use Migrations vs CLI
 
-For one-off reads or changes, use the CLI. For environment-transferable changes, create a migration. Use `--at-cli` only for multi-step interactive work.
-
-## Wrapper behavior
-
-The wrapper solves the runtime-selection problem for the agent:
-
-- If DDEV is active for the project, it runs AgentTools via `ddev exec php index.php ...`
-- Otherwise it runs host-side `php index.php ...`
-- It uses `ddev exec --raw --` for inline argument modes so code is not flattened into a shell string inside the container
-- It uses normal `ddev exec` for stdin mode because that transports piped code correctly
-- The launcher is strategy-based and can be extended for other environments without changing the agent-facing command names
-
-The wrapper supports transport helpers `eval-b64` and `stdin-b64` for execution
-environments that rewrite `$...` in command strings. These are compatibility
-helpers in the skill, not part of the original AgentTools API. Prefer plain
-`eval` and `stdin` unless you hit transport problems.
-
-The wrapper also supports environment overrides:
-
-- `PW_AT_RUNNER=auto|host|ddev`
-- `PW_AT_PHP_CMD=php`
-
-When unsure, use the type of operation as a guide:
+For one-off reads or changes, use the CLI. For environment-transferable changes, create a migration. Use `cli` only for multi-step interactive work.
 
 | Operation | Default path | Reason |
 |-----------|-------------|--------|
@@ -70,6 +48,13 @@ When unsure, use the type of operation as a guide:
 | Pages | Ask the user | Could be seed data or environment-specific |
 | Module config, roles, permissions | Migration | Config drift causes subtle bugs |
 | Debugging, testing | CLI | Throwaway by nature |
+
+## Environment overrides
+
+- `PW_AT_RUNNER=auto|host|ddev` — force a specific runner instead of auto-detection
+- `PW_AT_PHP_CMD=php` — override the PHP binary
+
+## Reference
 
 - **Running PHP against the ProcessWire API** (queries, one-off changes, testing) — read [cli.md](cli.md)
 - **Creating migrations** (repeatable, transferable changes across environments) — read [migrations.md](migrations.md)

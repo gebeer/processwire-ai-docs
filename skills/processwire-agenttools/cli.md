@@ -11,15 +11,10 @@ bash .agents/skills/processwire-agenttools/scripts/pw-at.sh ...
 It selects the correct runtime automatically. For DDEV projects it runs inside the
 web container. Otherwise it uses host-side `php`.
 
-The wrapper preserves Ryan's original AgentTools command names. It only handles
-runtime selection and transport details.
-
 Compatibility helpers:
 
 - `eval-b64` for inline code when the execution environment rewrites `$variables`
 - `stdin-b64` for multi-line code when command transport is unreliable
-
-These helper modes are part of the skill wrapper, not part of AgentTools itself.
 
 ## --at-eval
 
