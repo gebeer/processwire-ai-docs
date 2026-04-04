@@ -94,9 +94,9 @@ Each run executes the file once — state does not persist between runs. Use for
 
 | Scenario | Command |
 |----------|---------|
-| Quick data lookup, simple expression | `--at-eval` |
-| Multi-line code, anything with `$` or quotes | `--at-stdin` with heredoc |
-| Extended multi-step session | `--at-cli` |
+| Quick data lookup, simple expression | `eval` |
+| Multi-line code, anything with `$` or quotes | `stdin` with heredoc |
+| Extended multi-step session | `cli` |
 
 ## Common mistakes
 
