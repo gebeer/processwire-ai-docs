@@ -49,3 +49,4 @@ ddev php cli_scripts/myscript.php
 - [CLI scripts and one-liners](cli-scripts.md) — conventions, examples, script file patterns
 - [TracyDebugger](tracy-debugger.md) — CLI debugging with `d()`, browser snippets with `bd()`
 - [Database queries](database-queries.md) — direct SQL via `database()` PDO wrapper, prepared statements
+- [Mailpit](mailpit.md) — catch WireMailSmtp mail in DDEV CLI scripts
