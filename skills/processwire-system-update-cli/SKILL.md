@@ -1,27 +1,33 @@
 ---
 name: "processwire-system-update-cli"
-description: "Upgrade ProcessWire modules first and core second through DDEV CLI"
-version: 4
-created: "2026-06-07"
-updated: "2026-06-07"
+description: "Upgrade modules and core files in ProcessWire projects through DDEV CLI"
+version: 5
 ---
+
 ## When to Use
 Use when updating a DDEV-based ProcessWire project's modules and core through CLI automation.
 
 ## Procedure
-1. Start by scanning for available updates before changing files. Use `ProcessWireUpgradeCheck` through `ddev php` to list outdated modules and core branches: `modules()->get('ProcessWireUpgradeCheck')->getModuleVersions(true, true)` and `getCoreBranches(false, true)`.
-2. Include a compatibility check in the initial scan. Inspect each update's requirements from `ProcessWireUpgradeCheck`/module-directory data (`requiresVersions`) and, when ZIP/source files are available, the module's public `getModuleInfo()` array `requires` property. Compare requirements against the current `PHP_VERSION` and `config()->version`.
-3. Decide update order from compatibility results:
+1. **Gate: ask the user which ProcessWire core target to use before doing anything else:** `master` or `dev`. Do not update files or commit until the user chooses. Store this as `$targetBranch`.
+2. Start by scanning for available updates before changing files. Use `ProcessWireUpgradeCheck` through `ddev php`:
+   - `getModuleVersions(true, true)` to list outdated modules.
+   - `getCoreBranches(false, true)` to fetch all available core branches.
+   
+   Use the user's `$targetBranch` choice to select the relevant entry, e.g. `$branches[$targetBranch]`, and use that selected version for compatibility checks and the final core ZIP.
+3. Include a compatibility check in the initial scan. Inspect each update's requirements from `ProcessWireUpgradeCheck`/module-directory data (`requiresVersions`) and, when ZIP/source files are available, the module's public `getModuleInfo()` array `requires` property. Compare requirements against the current `PHP_VERSION`, current `config()->version`, and the selected target core branch/version.
+4. Decide update order from compatibility results:
    - If all module updates satisfy the current PHP and ProcessWire versions, follow the normal **modules before core** paradigm.
    - If one or more module updates require a newer PHP version than DDEV currently provides, warn the user clearly and stop for a PHP/DDEV version decision before installing those modules.
-   - If one or more module updates require a newer ProcessWire version than currently installed, explain that this is a compatibility exception and suggest updating ProcessWire core first, then returning to module updates.
-4. If the scan reports Pro/paid modules, stop and ask the user for local ZIP paths for each Pro module before proceeding. Do not assume the paths are the same across projects. Confirm the ZIPs exist and inspect their top-level folder/module names before installation.
-5. Start DDEV and create a DB snapshot with `ddev snapshot --name before-system-update-$(date +%Y%m%d%H%M%S)`.
-6. Always update modules before ProcessWire core when compatibility allows it. Each module update must be committed separately with a conventional commit.
-7. For module ZIPs, use `wire/modules/Process/ProcessModule/ProcessModuleInstall.php` and `ProcessModuleInstall::unzipModule($tempZip, config()->paths->siteModules . $module . '/')`, then `modules()->refresh()` and `modules()->resetCache()`. Copy paid ZIPs into a project/cache temp path first because `unzipModule()` deletes the ZIP it extracts.
-8. For public modules, download the ZIP quietly into `site/assets/cache/module-update-zips/`, install via the same `ProcessModuleInstall::unzipModule()` flow, verify version with `getModuleInfoVerbose()`, then commit only that module directory.
-9. After all modules report no outdated modules, update ProcessWire core from the dev branch ZIP. Replace `wire/` from the extracted archive, update `index.php` when its PROCESSWIRE index version changes, update `.htaccess` only after reviewing diffs, and update `composer.json` package metadata if changed.
-10. Verify via `ddev php` bootstrap: `config()->version`, module versions, and `count($check->getModuleVersions(true,true)) === 0`. Smoke test frontend and the admin URL from `config()->urls->admin`.
+   - If one or more module updates require a newer ProcessWire version than currently installed, but the selected target branch satisfies that requirement, explain that this is a compatibility exception and suggest updating ProcessWire core first, then returning to module updates.
+   - If one or more module updates require a newer ProcessWire version than even the selected target branch provides, stop and warn that the chosen core target is insufficient.
+5. If the scan reports Pro/paid modules, stop and ask the user for local ZIP paths for each Pro module before proceeding. Do not assume the paths are the same across projects. Confirm the ZIPs exist and inspect their top-level folder/module names before installation.
+6. Start DDEV and create a DB snapshot with `ddev snapshot --name before-system-update-$(date +%Y%m%d%H%M%S)`.
+7. Always update modules before ProcessWire core when compatibility allows it. Each module update must be committed separately with a conventional commit.
+8. For module ZIPs, use `wire/modules/Process/ProcessModule/ProcessModuleInstall.php` and `ProcessModuleInstall::unzipModule($tempZip, config()->paths->siteModules . $module . '/')`, then `modules()->refresh()` and `modules()->resetCache()`. Copy paid ZIPs into a project/cache temp path first because `unzipModule()` deletes the ZIP it extracts.
+9. For public modules, download the ZIP quietly into `site/assets/cache/module-update-zips/`, install via the same `ProcessModuleInstall::unzipModule()` flow, verify version with `getModuleInfoVerbose()`, then commit only that module directory.
+10. After all modules report no outdated modules, update ProcessWire core from the user-selected branch ZIP, not a hardcoded branch. Replace `wire/` from the extracted archive, update `index.php` when its PROCESSWIRE index version changes, update `.htaccess` only after reviewing diffs, and update `composer.json` package metadata if changed.
+11. Verify via `ddev php` bootstrap: `config()->version`, module versions, selected target branch/version, and `count($check->getModuleVersions(true,true)) === 0`. Smoke test frontend and the admin URL from `config()->urls->admin`.
+
 ## Pitfalls
 - Do not blindly update ProcessWire core before modules. The preferred order is modules first, then core, but compatibility requirements can create an exception.
 - Do not blindly update modules first if their `requires`/`requiresVersions` says they need a newer ProcessWire core or PHP runtime. Warn about PHP requirements; suggest core-first only when a module update requires newer ProcessWire.
@@ -36,8 +42,9 @@ Use when updating a DDEV-based ProcessWire project's modules and core through CL
 - Review `index.php` and `.htaccess` diffs separately during core update. In this upgrade, `index.php` needed updating from PROCESSWIRE index `300` to `303`; `.htaccess` had the same `@htaccessVersion 301` but included a security-header comment/change, so it was intentionally copied after review.
 - Do not assume the admin URL is `/processwire/`; read it with `config()->urls->admin` and smoke test that path.
 - `ddev snapshot list` is wrong for this DDEV version; use `ddev snapshot --list`.
+
 ## Verification
-1. The initial report includes update availability plus compatibility status for PHP and ProcessWire requirements.
+1. The initial report includes selected core target (`master` or `dev`), update availability, and compatibility status for PHP and ProcessWire requirements.
 2. `git status --short --branch` is clean after commits.
 3. `ddev php` reports expected ProcessWire and module versions.
 4. `ProcessWireUpgradeCheck->getModuleVersions(true,true)` returns zero items.
